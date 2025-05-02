@@ -1,0 +1,108 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{hyperref}
+\geometry{margin=1in}
+
+\title{Interpretive Collapse Theory (ICT): A Modal-Epistemic Framework for Semantic Selection Under Uncertainty}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{1. Ontological Primitives}
+\begin{itemize}
+  \item \( \mathcal{A} = \{A_1, A_2, ..., A_n\} \): Set of agents
+  \item \( \mathcal{U} \): Set of utterances or signals
+  \item \( \mathcal{H}_u \): Set of interpretation paths (histories) for utterance \( u \)
+  \item \( \mathcal{C}_i \): Collapse function for agent \( A_i \)
+  \item \( \mathcal{B}_i \): Belief model maintained by \( A_i \)
+  \item \( S_i \): Strategy function or interpretive policy of \( A_i \)
+  \item \( \Psi_i \): Path scoring function
+  \item \( U_i \): Utility function over interpretations
+\end{itemize}
+
+\section*{2. Syntax}
+\subsection*{Modal-Epistemic Language \( \mathcal{L}_{ICT} \)}
+\begin{itemize}
+  \item Atomic Propositions: \( p, q, r, \dots \in \mathcal{P} \)
+  \item Modal Operators:
+  \begin{itemize}
+    \item \( K_i \varphi \): ``Agent \( A_i \) knows \( \varphi \)''
+    \item \( B_i \varphi \): ``Agent \( A_i \) believes \( \varphi \)''
+    \item \( C_i \varphi \): ``Agent \( A_i \) collapses on \( \varphi \)''
+    \item \( \Diamond_i \varphi \): ``\( \varphi \) is an interpretive possibility for \( A_i \)''
+  \end{itemize}
+\end{itemize}
+
+Formulas:
+\[
+\varphi ::= p \mid \neg \varphi \mid \varphi \wedge \varphi \mid K_i \varphi \mid B_i \varphi \mid C_i \varphi \mid \Diamond_i \varphi
+\]
+
+\section*{3. Semantics}
+We define a Kripke-style frame:
+\[
+\mathcal{F} = (W, R_i, V)
+\]
+\begin{itemize}
+  \item \( W \): Set of possible worlds (interpretive contexts)
+  \item \( R_i \subseteq W \times W \): Accessibility relation for agent \( A_i \)
+  \item \( V: \mathcal{P} \to \mathcal{P}(W) \): Valuation function
+\end{itemize}
+
+\textbf{Interpretation:}
+\begin{align*}
+  \mathcal{M}, w \models K_i \varphi &\iff \forall w' (w R_i w' \Rightarrow \mathcal{M}, w' \models \varphi) \\
+  \mathcal{M}, w \models B_i \varphi &\iff \varphi \in \mathcal{B}_i(w) \\
+  \mathcal{M}, w \models C_i \varphi &\iff \varphi = \arg\max_{\psi \in \Diamond_i} \Psi_i(\psi) \\
+  \Diamond_i \varphi &: \text{Set of all } \varphi \text{ consistent with } A_i\text{'s weighted histories}
+\end{align*}
+
+\section*{4. Axioms and Rules}
+\subsection*{Knowledge and Belief Axioms}
+\begin{itemize}
+  \item (K) \( K_i(\varphi \rightarrow \psi) \rightarrow (K_i \varphi \rightarrow K_i \psi) \)
+  \item (T) \( K_i \varphi \rightarrow \varphi \)
+  \item (4) \( K_i \varphi \rightarrow K_i K_i \varphi \)
+  \item (5) \( \neg K_i \varphi \rightarrow K_i \neg K_i \varphi \)
+\end{itemize}
+
+\subsection*{Collapse-Specific Axioms}
+\begin{itemize}
+  \item (C1) \( C_i \varphi \wedge C_i \psi \rightarrow \varphi = \psi \)
+  \item (C2) \( C_i \varphi \rightarrow B_i \varphi \)
+  \item (C3) \( \exists w, w' \in W: C_i^w \varphi \wedge C_i^{w'} \psi \wedge \varphi \neq \psi \)
+  \item (C4) \( C_i \varphi \leftrightarrow \forall \psi \in \Diamond_i: \Psi_i(\varphi) \geq \Psi_i(\psi) \)
+\end{itemize}
+
+\section*{5. Interpretive Dynamics}
+\subsection*{Weighted Path Selection}
+\[ \Psi_i(h) = \alpha \cdot A(h) + \beta \cdot P(h) + \gamma \cdot R(h, \mathcal{B}_i) \]
+
+\subsection*{Collapse Function}
+\[ \mathcal{C}_i(u) = \arg\max_{h \in \mathcal{H}_u} \Psi_i(h) \]
+
+\subsection*{Belief Update Rule}
+\[ \mathcal{B}_i^{t+1} = f_{\text{update}}(\mathcal{B}_i^t, h^*, \text{obs}) \]
+
+\subsection*{Strategy Update}
+\[ \theta_i^{t+1} = \theta_i^t + \eta \nabla_{\theta_i} \mathbb{E}[U_i(h)] \]
+
+\section*{6. Optional Meta-Logical Structures}
+\begin{itemize}
+  \item Meta-collapse Loop: \( \text{If } \mathcal{H}(w_i) > \delta, \text{ then } S_i \leftarrow \text{MetaCollapse}(S_i, \mathcal{L}_i) \)
+  \item Belief Compression: \( \mathcal{B}_i \rightarrow f_\phi(\mathcal{B}_i), \text{ minimizing } D_{KL} \)
+  \item Counterfactual Simulation: \( \text{Simulate } \{h^{(1)}, ..., h^{(k)}\}, \text{ choose } \arg\max U_i(h^{(k)}) \)
+\end{itemize}
+
+\section*{7. Collapse Memory}
+Each agent maintains:
+\[
+\mathcal{M}_i = \{(u, \mathcal{H}_u, h^*, \Psi_i, U_i, \theta_i)\}_{t \in T}
+\]
+
+\end{document}
